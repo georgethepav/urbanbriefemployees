@@ -62,6 +62,7 @@
       font-weight: 700;
       color: var(--ub-primary);
       background: white;
+      font-size: 1.2rem;
     }
 
     .logo-text h1 {
@@ -151,6 +152,8 @@
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 8px;
+      border-left: 4px solid var(--ub-primary);
+      padding-left: 10px;
     }
 
     .section-header h3 {
@@ -320,13 +323,15 @@
     }
 
     .report-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      border-bottom: 2px solid var(--ub-border);
-      padding-bottom: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--ub-border);
+      background: linear-gradient(120deg, #ffffff, #eef3fb);
+      padding: 14px 16px 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr) auto;
+      gap: 12px;
       margin-bottom: 14px;
+      border-top: 5px solid var(--ub-primary);
     }
 
     .report-title-block h1 {
@@ -353,17 +358,20 @@
       margin-bottom: 2px;
     }
 
-    .report-logo {
-      width: 70px;
-      height: 70px;
-      border-radius: 16px;
-      border: 2px solid var(--ub-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
+    .report-meta .internal-tag {
+      font-weight: 600;
       color: var(--ub-primary);
-      font-size: 1.3rem;
+    }
+
+    .report-logo-box {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .report-logo-img {
+      max-height: 60px;
+      max-width: 120px;
     }
 
     .report-section {
@@ -423,10 +431,6 @@
       background: #f9fafb;
     }
 
-    .pill.positive {
-      border-color: rgba(34, 197, 94, 0.4);
-    }
-
     .pill.negative {
       border-color: rgba(248, 113, 113, 0.6);
     }
@@ -477,8 +481,45 @@
       margin: 6px 0 2px;
     }
 
+    .maps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px 16px;
+      margin-top: 4px;
+    }
+
+    .maps-grid img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+    }
+
     .no-print {
-      /* Hidden in print mode */
+      /* marker for elements hidden in print */
+    }
+
+    /* Print header/footer */
+    .print-header,
+    .print-footer {
+      display: none;
+    }
+
+    .print-header-inner,
+    .print-footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--ub-muted);
+    }
+
+    .print-header-inner span,
+    .print-footer-inner span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     @media (max-width: 720px) {
@@ -490,17 +531,23 @@
         text-align: left;
       }
       .report-header {
-        flex-direction: column;
-        align-items: flex-start;
+        grid-template-columns: minmax(0, 1fr);
       }
       .report-meta {
         text-align: left;
       }
+      .report-logo-box {
+        justify-content: flex-start;
+      }
+    }
+
+    @page {
+      margin: 20mm 15mm;
     }
 
     @media print {
       body {
-        background: white;
+        background: #ffffff;
       }
 
       .page {
@@ -514,20 +561,52 @@
 
       #report-panel {
         display: block !important;
+        box-shadow: none;
+        border: none;
       }
 
       #report {
         box-shadow: none;
         border-radius: 0;
-        max-width: none;
-        margin: 0;
         border: none;
-        padding: 16mm 14mm 18mm;
-        page-break-after: avoid;
+        margin: 0;
+        padding: 20mm 15mm 18mm;
       }
 
       .no-print {
         display: none !important;
+      }
+
+      .print-header,
+      .print-footer {
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        font-size: 0.78rem;
+        color: var(--ub-muted);
+        padding: 2mm 15mm;
+        background: #ffffff;
+        z-index: 1000;
+      }
+
+      .print-header {
+        top: 0;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .print-footer {
+        bottom: 0;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .page-number::before {
+        content: "Page " counter(page);
+      }
+
+      #report {
+        margin-top: 15mm;
+        margin-bottom: 12mm;
       }
 
       .report-section {
@@ -537,18 +616,31 @@
   </style>
 </head>
 <body>
+
+<!-- PRINT HEADER / FOOTER (PRINT-ONLY) -->
+<div class="print-header">
+  <div class="print-header-inner">
+    <span id="printHeaderMain">Urban Brief – Planning Reality Report</span>
+  </div>
+</div>
+<div class="print-footer">
+  <div class="print-footer-inner">
+    <span id="printFooterMain">Urban Brief – Planning Reality Report</span>
+    <span class="page-number"></span>
+  </div>
+</div>
+
 <div class="page">
   <header class="main-header">
     <div class="logo-lockup">
       <div class="logo-mark">UB</div>
       <div class="logo-text">
         <h1>UrbanBrief</h1>
-        <p>Planning Reality Report – Internal Form</p>
+        <p>Planning Reality Report – Input Form</p>
       </div>
     </div>
     <div class="tagline">
-      <div>For internal UrbanBrief use only</div>
-      <div>Complete accurately using the LPA website and policy documents.</div>
+      <div>Complete using the relevant LPA website, policy documents and mapping.</div>
     </div>
   </header>
 
@@ -556,10 +648,8 @@
   <div id="input-panel" class="panel">
     <div class="panel-header">
       <div>
-        <h2>
-          Planning Reality Report – Input Checklist
-        </h2>
-        <p>Junior: work through each section. Use council website, policy PDFs and Google Maps / Street View.</p>
+        <h2>Planning Reality Report – Input Checklist</h2>
+        <p>Work through each section using the council website, Local Plan / SPD documents and Google Maps.</p>
       </div>
       <div class="badge">
         <span>Step 1</span>
@@ -585,7 +675,7 @@
           </div>
           <div class="field">
             <label for="site_address">Site address</label>
-            <input type="text" id="site_address" name="site_address" required>
+            <input type="text" id="site_address" name="site_address" required placeholder="First line and street">
           </div>
           <div class="field">
             <label for="site_postcode">Postcode</label>
@@ -598,7 +688,7 @@
           <div class="field">
             <label for="existing_use_class">Existing use class</label>
             <input type="text" id="existing_use_class" name="existing_use_class" placeholder="e.g. C3 dwellinghouse">
-            <small class="hint">Look up on council records / planning history where available.</small>
+            <small class="hint">Refer to planning history / council records where available.</small>
           </div>
           <div class="field">
             <label for="proposal_summary">Proposal summary (plain English)</label>
@@ -678,7 +768,7 @@
             <label><input type="checkbox" name="designations" value="flood_zone_3"> Flood Zone 3</label>
             <label><input type="checkbox" name="designations" value="sssi"> SSSI / SAC</label>
             <label><input type="checkbox" name="designations" value="listed_building"> Listed building</label>
-            <label><input type="checkbox" name="designations" value="locally_listed"> Locally listed</label>
+            <label><input type="checkbox" name="designations" value="locally_listed"> Locally listed building</label>
             <label><input type="checkbox" name="designations" value="none"> None</label>
           </div>
         </div>
@@ -812,7 +902,7 @@
       <div class="section">
         <div class="section-header">
           <h3>D. Policy & Guidance Findings</h3>
-          <span>Use council Local Plan / SPD documents.</span>
+          <span>Use the Local Plan, SPD documents and NPPF.</span>
         </div>
 
         <div class="field-grid">
@@ -926,7 +1016,7 @@
             <textarea id="policy1_quote" name="policy1_quote" placeholder="Copy and paste the relevant lines from the policy document."></textarea>
           </div>
           <div class="field">
-            <label for="policy1_interp">Junior interpretation / comment</label>
+            <label for="policy1_interp">Interpretation / comment</label>
             <textarea id="policy1_interp" name="policy1_interp" placeholder="Explain briefly how the proposal does or does not comply with this policy."></textarea>
           </div>
         </div>
@@ -963,7 +1053,7 @@
             <textarea id="policy2_quote" name="policy2_quote"></textarea>
           </div>
           <div class="field">
-            <label for="policy2_interp">Junior interpretation / comment</label>
+            <label for="policy2_interp">Interpretation / comment</label>
             <textarea id="policy2_interp" name="policy2_interp"></textarea>
           </div>
         </div>
@@ -1066,7 +1156,7 @@
         </div>
         <div class="field-grid">
           <div class="field">
-            <label for="hist1_officer">Key officer comments (copy)</label>
+            <label for="hist1_officer">Key officer comments (summary)</label>
             <textarea id="hist1_officer" name="hist1_officer"></textarea>
           </div>
           <div class="field">
@@ -1110,16 +1200,16 @@
       <div class="section">
         <div class="section-header">
           <h3>Maps & Street View</h3>
-          <span>Paste links from Google Maps.</span>
+          <span>Links used plus automated images in the report.</span>
         </div>
         <div class="field-grid">
           <div class="field">
-            <label for="maps_location_url">Google Maps URL</label>
+            <label for="maps_location_url">Google Maps URL (optional)</label>
             <input type="url" id="maps_location_url" name="maps_location_url" placeholder="https://maps.google.com/...">
-            <small class="hint">Open the red-pin location and copy the URL from the address bar.</small>
+            <small class="hint">Open the red-pin location and copy the URL from the address bar (for reference).</small>
           </div>
           <div class="field">
-            <label for="maps_streetview_url">Street View URL</label>
+            <label for="maps_streetview_url">Street View URL (optional)</label>
             <input type="url" id="maps_streetview_url" name="maps_streetview_url" placeholder="https://www.google.com/maps/@...">
             <small class="hint">Choose the clearest street view of the site.</small>
           </div>
@@ -1135,7 +1225,7 @@
 
         <div class="field-grid">
           <div class="field">
-            <label for="likelihood">Overall likelihood of approval (your view)</label>
+            <label for="likelihood">Overall likelihood of approval (initial view)</label>
             <select id="likelihood" name="likelihood">
               <option value="">Select…</option>
               <option value="high">High</option>
@@ -1174,8 +1264,8 @@
         </div>
 
         <div class="field">
-          <label for="junior_balance">Junior’s draft planning balance (short summary)</label>
-          <textarea id="junior_balance" name="junior_balance" placeholder="In 3–5 sentences, explain the key benefits, key risks, and your overall judgement."></textarea>
+          <label for="junior_balance">Draft planning balance (short summary)</label>
+          <textarea id="junior_balance" name="junior_balance" placeholder="In 3–5 sentences, explain the key benefits, key risks, and the overall judgement."></textarea>
         </div>
       </div>
 
@@ -1193,7 +1283,7 @@
     <div class="panel-header no-print">
       <div>
         <h2>Planning Reality Report – Preview</h2>
-        <p>Review quickly before saving as PDF. Use this version for issuing to clients.</p>
+        <p>Review before exporting. Use this version for issuing to clients.</p>
       </div>
       <div class="badge">
         <span>Step 2</span>
@@ -1218,10 +1308,11 @@
         <div class="report-meta">
           <div><strong>Prepared by:</strong> UrbanBrief</div>
           <div><strong>Client:</strong> <span id="r_client_name"></span></div>
-          <div><strong>Use:</strong> Internal planning appraisal</div>
+          <div class="internal-tag">For internal UrbanBrief use only</div>
         </div>
-        <div class="report-logo">
-          UB
+        <div class="report-logo-box">
+          <!-- Use UB-mono logo file -->
+          <img src="UB-mono.svg" alt="UrbanBrief logo" class="report-logo-img">
         </div>
       </div>
 
@@ -1325,14 +1416,24 @@
       <div class="report-section">
         <h2>7. Location & Mapping</h2>
         <p>This report has been informed by publicly available mapping and imagery.</p>
-        <p><span class="label">Google Maps location:</span> <span id="r_maps_location_url"></span></p>
-        <p><span class="label">Street View:</span> <span id="r_maps_streetview_url"></span></p>
-        <p class="hint">Static images or embeds can be added in future iterations using these URLs.</p>
+        <p><span class="label">Google Maps location URL:</span> <span id="r_maps_location_url"></span></p>
+        <p><span class="label">Street View URL:</span> <span id="r_maps_streetview_url"></span></p>
+
+        <div class="maps-grid">
+          <div>
+            <div class="small-heading">Figure 1. Aerial context</div>
+            <img id="r_static_map_img" alt="Site aerial map" />
+          </div>
+          <div>
+            <div class="small-heading">Figure 2. Street view</div>
+            <img id="r_streetview_img" alt="Site street view" />
+          </div>
+        </div>
       </div>
 
       <div class="report-section">
         <h2>8. Planning Balance & Indicative Conclusion</h2>
-        <p><span class="label">Overall likelihood of approval (internal assessment):</span> <span id="r_likelihood"></span></p>
+        <p><span class="label">Overall likelihood of approval (UrbanBrief assessment):</span> <span id="r_likelihood"></span></p>
 
         <h3>8.1 Key benefits</h3>
         <div class="pill-row" id="r_benefits"></div>
@@ -1348,8 +1449,8 @@
           <p>
             On the basis of the information available at the time of writing, this proposal is considered to have an
             overall <span id="r_likelihood_inline"></span> prospect of gaining planning permission. The planning balance
-            will depend on how the LPA weighs the identified benefits and harms, particularly in relation to local design
-            guidance, character, amenity and technical matters.
+            will depend on how the local planning authority weighs the identified benefits and harms, particularly in
+            relation to local design guidance, character, amenity and technical matters.
           </p>
         </div>
       </div>
@@ -1367,6 +1468,9 @@
 </div>
 
 <script>
+  // 👉 REPLACE THIS WITH YOUR REAL GOOGLE MAPS API KEY
+  const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY_HERE';
+
   const form = document.getElementById('prrForm');
   const inputPanel = document.getElementById('input-panel');
   const reportPanel = document.getElementById('report-panel');
@@ -1467,7 +1571,7 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    // Basic values
+    // Core details
     const clientName = textVal('client_name');
     const siteAddress = textVal('site_address');
     const sitePostcode = textVal('site_postcode');
@@ -1483,6 +1587,12 @@
     fillText('r_council_name_2', councilName);
     fillText('r_existing_use_class', existingUse || 'Not specified');
     fillText('r_proposal_summary', proposalSummary || 'Not provided.');
+
+    // Header/footer line for print: first line of address
+    const addressLine = siteAddress.split(',')[0] || siteAddress || 'Site address';
+    const headerFooterText = 'Urban Brief – Planning Reality Report – ' + addressLine;
+    fillText('printHeaderMain', headerFooterText);
+    fillText('printFooterMain', headerFooterText);
 
     // Site & proposal type
     const siteTypeText = mapSelect('site_type');
@@ -1574,9 +1684,39 @@
     fillText('r_prec1_decision', mapSelect('prec1_decision') || 'Not specified');
     fillText('r_prec1_relevance', textVal('prec1_relevance') || 'Not explained.');
 
-    // Maps
-    fillText('r_maps_location_url', textVal('maps_location_url') || 'Not provided');
-    fillText('r_maps_streetview_url', textVal('maps_streetview_url') || 'Not provided');
+    // Maps (URLs)
+    const mapsLocationUrl = textVal('maps_location_url');
+    const mapsStreetViewUrl = textVal('maps_streetview_url');
+    fillText('r_maps_location_url', mapsLocationUrl || 'Not provided');
+    fillText('r_maps_streetview_url', mapsStreetViewUrl || 'Not provided');
+
+    // Build Google Static Maps / Street View images from address/postcode
+    const staticMapImg = document.getElementById('r_static_map_img');
+    const streetViewImg = document.getElementById('r_streetview_img');
+
+    if (GOOGLE_MAPS_API_KEY && (siteAddress || sitePostcode)) {
+      const query = encodeURIComponent((siteAddress + ' ' + sitePostcode).trim());
+      const staticMapUrl =
+        'https://maps.googleapis.com/maps/api/staticmap?center=' +
+        query +
+        '&zoom=18&size=640x360&maptype=satellite&markers=color:red|' +
+        query +
+        '&key=' + encodeURIComponent(GOOGLE_MAPS_API_KEY);
+
+      const streetViewUrl =
+        'https://maps.googleapis.com/maps/api/streetview?size=640x360&location=' +
+        query +
+        '&key=' + encodeURIComponent(GOOGLE_MAPS_API_KEY);
+
+      staticMapImg.src = staticMapUrl;
+      streetViewImg.src = streetViewUrl;
+      staticMapImg.style.display = 'block';
+      streetViewImg.style.display = 'block';
+    } else {
+      // No API key or address – hide images, they’ll just see the URLs text
+      staticMapImg.style.display = 'none';
+      streetViewImg.style.display = 'none';
+    }
 
     // Balance
     const likelihoodText = mapSelect('likelihood') || 'Not specified';
@@ -1589,7 +1729,7 @@
     buildPills('r_risks', risks, { labels: labelMaps.risks, type: 'risks' });
 
     const balanceText = textVal('junior_balance') ||
-      'A draft planning balance has not been provided. This section should be completed before issuing to the client.';
+      'A narrative planning balance has not been provided. This section should be completed before issuing to the client.';
     fillText('r_junior_balance', balanceText);
 
     // Show report view
@@ -1610,4 +1750,3 @@
 </script>
 </body>
 </html>
-
