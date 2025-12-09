@@ -486,36 +486,41 @@
     @page { margin: 20mm 15mm; }
 
     @media print {
-      body { background: #ffffff; }
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 
-      .page {
-        padding: 0;
-        max-width: none;
-      }
+  body { background: #ffffff; }
 
-      .main-header {
-        display: none !important;
-      }
+  .page {
+    padding: 0;
+    max-width: none;
+  }
 
-      #input-panel { display: none !important; }
-      #report-panel {
-        display: block !important;
-        box-shadow: none;
-        border: none;
-      }
+  .main-header {
+    display: none !important;
+  }
 
-      #report {
-        box-shadow: none;
-        border-radius: 0;
-        border: none;
-        margin: 0;
-        padding: 10mm 10mm 10mm;
-      }
+  #input-panel { display: none !important; }
+  #report-panel {
+    display: block !important;
+    box-shadow: none;
+    border: none;
+  }
 
-      .no-print { display: none !important; }
+  #report {
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+    margin: 0;
+    padding: 10mm 10mm 10mm;
+  }
 
-      .report-section { page-break-inside: avoid; }
-    }
+  .no-print { display: none !important; }
+  .report-section { page-break-inside: avoid; }
+}
+
   </style>
 </head>
 <body>
