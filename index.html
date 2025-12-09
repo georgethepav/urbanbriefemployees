@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>UrbanBrief – Planning Reality Report Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
     :root {
       --ub-primary: #1f4f7b;
       --ub-secondary: #f5f7fb;
       --ub-border: #dde2ed;
-      --ub-text: #222222;
+      --ub-text: #111827;
       --ub-muted: #6b7280;
       --ub-accent: #f97316;
     }
@@ -85,7 +85,6 @@
       text-align: right;
     }
 
-    /* Panels */
     .panel {
       background: white;
       border-radius: 16px;
@@ -106,9 +105,12 @@
     .panel-header h2 {
       margin: 0;
       font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    }
+
+    .panel-header p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--ub-muted);
     }
 
     .badge {
@@ -127,13 +129,6 @@
       font-size: 0.8rem;
     }
 
-    .panel-header p {
-      margin: 0;
-      font-size: 0.85rem;
-      color: var(--ub-muted);
-    }
-
-    /* Form layout */
     form {
       display: grid;
       gap: 18px;
@@ -142,7 +137,7 @@
     .section {
       border-radius: 12px;
       border: 1px solid var(--ub-border);
-      padding: 14px 14px 4px;
+      padding: 14px 14px 8px;
       background: #ffffff;
     }
 
@@ -242,12 +237,6 @@
       accent-color: var(--ub-primary);
     }
 
-    .hint {
-      font-size: 0.8rem;
-      color: var(--ub-muted);
-      margin-top: 2px;
-    }
-
     .subsection-title {
       font-size: 0.85rem;
       font-weight: 700;
@@ -258,6 +247,12 @@
     .divider {
       border-top: 1px dashed var(--ub-border);
       margin: 8px 0 6px;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--ub-muted);
+      margin-top: 2px;
     }
 
     .actions {
@@ -307,7 +302,8 @@
       margin-top: 6px;
     }
 
-    /* Report styles */
+    /* REPORT STYLES */
+
     #report-panel {
       display: none;
     }
@@ -435,13 +431,6 @@
       border-color: rgba(248, 113, 113, 0.6);
     }
 
-    .pill.negative::before {
-      content: "!";
-      margin-right: 4px;
-      font-weight: 700;
-      color: #b91c1c;
-    }
-
     .accent-box {
       padding: 8px 10px;
       border-radius: 10px;
@@ -454,23 +443,19 @@
       font-weight: 600;
     }
 
-    .report-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .report-actions .note {
-      margin: 0;
-    }
-
     .disclaimer {
       font-size: 0.78rem;
       color: var(--ub-muted);
       margin-top: 6px;
       border-top: 1px solid var(--ub-border);
       padding-top: 6px;
+    }
+
+    .report-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
     .small-heading {
@@ -496,10 +481,11 @@
     }
 
     .no-print {
-      /* marker for elements hidden in print */
+      /* marker */
     }
 
-    /* Print header/footer */
+    /* PRINT HEADER / FOOTER */
+
     .print-header,
     .print-footer {
       display: none;
@@ -667,27 +653,27 @@
         <div class="field-grid">
           <div class="field">
             <label for="client_name">Client name</label>
-            <input type="text" id="client_name" name="client_name" placeholder="e.g. Smith Developments Ltd">
+            <input type="text" id="client_name" name="client_name" placeholder="e.g. Smith Developments Ltd" />
           </div>
           <div class="field">
             <label for="client_contact_email">Client email (optional)</label>
-            <input type="email" id="client_contact_email" name="client_contact_email">
+            <input type="email" id="client_contact_email" name="client_contact_email" />
           </div>
           <div class="field">
             <label for="site_address">Site address</label>
-            <input type="text" id="site_address" name="site_address" required placeholder="First line and street">
+            <input type="text" id="site_address" name="site_address" required placeholder="First line and street" />
           </div>
           <div class="field">
             <label for="site_postcode">Postcode</label>
-            <input type="text" id="site_postcode" name="site_postcode" required>
+            <input type="text" id="site_postcode" name="site_postcode" required />
           </div>
           <div class="field">
             <label for="council_name">Local planning authority</label>
-            <input type="text" id="council_name" name="council_name" placeholder="e.g. London Borough of Camden" required>
+            <input type="text" id="council_name" name="council_name" placeholder="e.g. London Borough of Camden" required />
           </div>
           <div class="field">
             <label for="existing_use_class">Existing use class</label>
-            <input type="text" id="existing_use_class" name="existing_use_class" placeholder="e.g. C3 dwellinghouse">
+            <input type="text" id="existing_use_class" name="existing_use_class" placeholder="e.g. C3 dwellinghouse" />
             <small class="hint">Refer to planning history / council records where available.</small>
           </div>
           <div class="field">
@@ -757,19 +743,19 @@
         <div class="field">
           <label>Is the site within any of the following?</label>
           <div class="inline-options">
-            <label><input type="checkbox" name="designations" value="conservation_area"> Conservation area</label>
-            <label><input type="checkbox" name="designations" value="green_belt"> Green Belt</label>
-            <label><input type="checkbox" name="designations" value="aonb"> AONB</label>
-            <label><input type="checkbox" name="designations" value="national_park"> National Park</label>
-            <label><input type="checkbox" name="designations" value="world_heritage_site"> World Heritage Site</label>
-            <label><input type="checkbox" name="designations" value="article_4"> Article 4 Direction area</label>
-            <label><input type="checkbox" name="designations" value="flood_zone_1"> Flood Zone 1</label>
-            <label><input type="checkbox" name="designations" value="flood_zone_2"> Flood Zone 2</label>
-            <label><input type="checkbox" name="designations" value="flood_zone_3"> Flood Zone 3</label>
-            <label><input type="checkbox" name="designations" value="sssi"> SSSI / SAC</label>
-            <label><input type="checkbox" name="designations" value="listed_building"> Listed building</label>
-            <label><input type="checkbox" name="designations" value="locally_listed"> Locally listed building</label>
-            <label><input type="checkbox" name="designations" value="none"> None</label>
+            <label><input type="checkbox" name="designations" value="conservation_area" /> Conservation area</label>
+            <label><input type="checkbox" name="designations" value="green_belt" /> Green Belt</label>
+            <label><input type="checkbox" name="designations" value="aonb" /> AONB</label>
+            <label><input type="checkbox" name="designations" value="national_park" /> National Park</label>
+            <label><input type="checkbox" name="designations" value="world_heritage_site" /> World Heritage Site</label>
+            <label><input type="checkbox" name="designations" value="article_4" /> Article 4 Direction area</label>
+            <label><input type="checkbox" name="designations" value="flood_zone_1" /> Flood Zone 1</label>
+            <label><input type="checkbox" name="designations" value="flood_zone_2" /> Flood Zone 2</label>
+            <label><input type="checkbox" name="designations" value="flood_zone_3" /> Flood Zone 3</label>
+            <label><input type="checkbox" name="designations" value="sssi" /> SSSI / SAC</label>
+            <label><input type="checkbox" name="designations" value="listed_building" /> Listed building</label>
+            <label><input type="checkbox" name="designations" value="locally_listed" /> Locally listed building</label>
+            <label><input type="checkbox" name="designations" value="none" /> None</label>
           </div>
         </div>
       </div>
@@ -784,15 +770,15 @@
         <div class="field">
           <label>Known constraints</label>
           <div class="inline-options">
-            <label><input type="checkbox" name="constraints" value="tpo"> Protected trees (TPO)</label>
-            <label><input type="checkbox" name="constraints" value="hedgerows"> Important hedgerows</label>
-            <label><input type="checkbox" name="constraints" value="right_of_way"> Right of way across site</label>
-            <label><input type="checkbox" name="constraints" value="contaminated"> Contaminated land</label>
-            <label><input type="checkbox" name="constraints" value="noise"> Noise (road / rail / industrial)</label>
-            <label><input type="checkbox" name="constraints" value="aqma"> Air Quality Management Area</label>
-            <label><input type="checkbox" name="constraints" value="archaeology"> Archaeological interest</label>
-            <label><input type="checkbox" name="constraints" value="heritage_sightlines"> Heritage sightline issues</label>
-            <label><input type="checkbox" name="constraints" value="unknown"> Unknown</label>
+            <label><input type="checkbox" name="constraints" value="tpo" /> Protected trees (TPO)</label>
+            <label><input type="checkbox" name="constraints" value="hedgerows" /> Important hedgerows</label>
+            <label><input type="checkbox" name="constraints" value="right_of_way" /> Right of way across site</label>
+            <label><input type="checkbox" name="constraints" value="contaminated" /> Contaminated land</label>
+            <label><input type="checkbox" name="constraints" value="noise" /> Noise (road / rail / industrial)</label>
+            <label><input type="checkbox" name="constraints" value="aqma" /> Air Quality Management Area</label>
+            <label><input type="checkbox" name="constraints" value="archaeology" /> Archaeological interest</label>
+            <label><input type="checkbox" name="constraints" value="heritage_sightlines" /> Heritage sightline issues</label>
+            <label><input type="checkbox" name="constraints" value="unknown" /> Unknown</label>
           </div>
         </div>
 
@@ -898,7 +884,7 @@
         </div>
       </div>
 
-      <!-- POLICY-SPECIFIC -->
+      <!-- POLICY & GUIDANCE -->
       <div class="section">
         <div class="section-header">
           <h3>D. Policy & Guidance Findings</h3>
@@ -981,7 +967,7 @@
         </div>
       </div>
 
-      <!-- POLICY EVIDENCE BLOCKS -->
+      <!-- DETAILED POLICY EXTRACTS -->
       <div class="section">
         <div class="section-header">
           <h3>D2. Detailed Policy Extracts</h3>
@@ -995,19 +981,19 @@
         <div class="field-grid">
           <div class="field">
             <label for="policy1_authority">Authority / council</label>
-            <input type="text" id="policy1_authority" name="policy1_authority" placeholder="e.g. London Borough of Camden">
+            <input type="text" id="policy1_authority" name="policy1_authority" placeholder="e.g. London Borough of Camden" />
           </div>
           <div class="field">
             <label for="policy1_doc_title">Document title</label>
-            <input type="text" id="policy1_doc_title" name="policy1_doc_title" placeholder="e.g. Camden Local Plan 2017">
+            <input type="text" id="policy1_doc_title" name="policy1_doc_title" placeholder="e.g. Camden Local Plan 2017" />
           </div>
           <div class="field">
             <label for="policy1_ref">Policy reference</label>
-            <input type="text" id="policy1_ref" name="policy1_ref" placeholder="e.g. Policy D1">
+            <input type="text" id="policy1_ref" name="policy1_ref" placeholder="e.g. Policy D1" />
           </div>
           <div class="field">
             <label for="policy1_title">Policy title</label>
-            <input type="text" id="policy1_title" name="policy1_title" placeholder="e.g. Design">
+            <input type="text" id="policy1_title" name="policy1_title" placeholder="e.g. Design" />
           </div>
         </div>
         <div class="field-grid">
@@ -1022,7 +1008,7 @@
         </div>
         <div class="field">
           <label for="policy1_url">Source URL</label>
-          <input type="url" id="policy1_url" name="policy1_url" placeholder="Link to the online policy document or PDF.">
+          <input type="url" id="policy1_url" name="policy1_url" placeholder="Link to the online policy document or PDF." />
         </div>
 
         <div class="divider"></div>
@@ -1032,19 +1018,19 @@
         <div class="field-grid">
           <div class="field">
             <label for="policy2_authority">Authority / council</label>
-            <input type="text" id="policy2_authority" name="policy2_authority">
+            <input type="text" id="policy2_authority" name="policy2_authority" />
           </div>
           <div class="field">
             <label for="policy2_doc_title">Document title</label>
-            <input type="text" id="policy2_doc_title" name="policy2_doc_title">
+            <input type="text" id="policy2_doc_title" name="policy2_doc_title" />
           </div>
           <div class="field">
             <label for="policy2_ref">Policy reference</label>
-            <input type="text" id="policy2_ref" name="policy2_ref">
+            <input type="text" id="policy2_ref" name="policy2_ref" />
           </div>
           <div class="field">
             <label for="policy2_title">Policy title</label>
-            <input type="text" id="policy2_title" name="policy2_title">
+            <input type="text" id="policy2_title" name="policy2_title" />
           </div>
         </div>
         <div class="field-grid">
@@ -1059,7 +1045,7 @@
         </div>
         <div class="field">
           <label for="policy2_url">Source URL</label>
-          <input type="url" id="policy2_url" name="policy2_url">
+          <input type="url" id="policy2_url" name="policy2_url" />
         </div>
       </div>
 
@@ -1133,11 +1119,11 @@
         <div class="field-grid">
           <div class="field">
             <label for="hist1_ref">Application reference</label>
-            <input type="text" id="hist1_ref" name="hist1_ref">
+            <input type="text" id="hist1_ref" name="hist1_ref" />
           </div>
           <div class="field">
             <label for="hist1_desc">Description</label>
-            <input type="text" id="hist1_desc" name="hist1_desc">
+            <input type="text" id="hist1_desc" name="hist1_desc" />
           </div>
           <div class="field">
             <label for="hist1_decision">Decision</label>
@@ -1151,7 +1137,7 @@
           </div>
           <div class="field">
             <label for="hist1_date">Decision date (text)</label>
-            <input type="text" id="hist1_date" name="hist1_date" placeholder="e.g. 12 March 2023">
+            <input type="text" id="hist1_date" name="hist1_date" placeholder="e.g. 12 March 2023" />
           </div>
         </div>
         <div class="field-grid">
@@ -1171,15 +1157,15 @@
         <div class="field-grid">
           <div class="field">
             <label for="prec1_address">Nearby address</label>
-            <input type="text" id="prec1_address" name="prec1_address">
+            <input type="text" id="prec1_address" name="prec1_address" />
           </div>
           <div class="field">
             <label for="prec1_ref">Council reference</label>
-            <input type="text" id="prec1_ref" name="prec1_ref">
+            <input type="text" id="prec1_ref" name="prec1_ref" />
           </div>
           <div class="field">
             <label for="prec1_desc">Description of development</label>
-            <input type="text" id="prec1_desc" name="prec1_desc">
+            <input type="text" id="prec1_desc" name="prec1_desc" />
           </div>
           <div class="field">
             <label for="prec1_decision">Decision result</label>
@@ -1205,18 +1191,18 @@
         <div class="field-grid">
           <div class="field">
             <label for="maps_location_url">Google Maps URL (optional)</label>
-            <input type="url" id="maps_location_url" name="maps_location_url" placeholder="https://maps.google.com/...">
+            <input type="url" id="maps_location_url" name="maps_location_url" placeholder="https://maps.google.com/..." />
             <small class="hint">Open the red-pin location and copy the URL from the address bar (for reference).</small>
           </div>
           <div class="field">
             <label for="maps_streetview_url">Street View URL (optional)</label>
-            <input type="url" id="maps_streetview_url" name="maps_streetview_url" placeholder="https://www.google.com/maps/@...">
+            <input type="url" id="maps_streetview_url" name="maps_streetview_url" placeholder="https://www.google.com/maps/@..." />
             <small class="hint">Choose the clearest street view of the site.</small>
           </div>
         </div>
       </div>
 
-      <!-- SUMMARY & BALANCE -->
+      <!-- PLANNING BALANCE -->
       <div class="section">
         <div class="section-header">
           <h3>Planning Balance & Risk</h3>
@@ -1239,42 +1225,43 @@
         <div class="subsection-title">Key benefits (tick all that apply)</div>
         <div class="field">
           <div class="inline-options">
-            <label><input type="checkbox" name="benefits" value="better_accommodation"> Better quality accommodation</label>
-            <label><input type="checkbox" name="benefits" value="visual_improvement"> Visual improvement</label>
-            <label><input type="checkbox" name="benefits" value="energy_efficiency"> Energy efficiency improvements</label>
-            <label><input type="checkbox" name="benefits" value="more_space"> Additional internal floorspace</label>
-            <label><input type="checkbox" name="benefits" value="better_layout"> Improved layout / accessibility</label>
-            <label><input type="checkbox" name="benefits" value="policy_support"> Strong policy support</label>
+            <label><input type="checkbox" name="benefits" value="better_accommodation" /> Better quality accommodation</label>
+            <label><input type="checkbox" name="benefits" value="visual_improvement" /> Visual improvement</label>
+            <label><input type="checkbox" name="benefits" value="energy_efficiency" /> Energy efficiency improvements</label>
+            <label><input type="checkbox" name="benefits" value="more_space" /> Additional internal floorspace</label>
+            <label><input type="checkbox" name="benefits" value="better_layout" /> Improved layout / accessibility</label>
+            <label><input type="checkbox" name="benefits" value="policy_support" /> Strong policy support</label>
           </div>
         </div>
 
         <div class="subsection-title">Key risks / harms (tick all that apply)</div>
         <div class="field">
           <div class="inline-options">
-            <label><input type="checkbox" name="risks" value="overlooking"> Overlooking / privacy</label>
-            <label><input type="checkbox" name="risks" value="overshadowing"> Overshadowing / daylight</label>
-            <label><input type="checkbox" name="risks" value="bulk_scale"> Bulk / scale / massing</label>
-            <label><input type="checkbox" name="risks" value="heritage_harm"> Heritage impact</label>
-            <label><input type="checkbox" name="risks" value="green_belt_conflict"> Green Belt issues</label>
-            <label><input type="checkbox" name="risks" value="parking_highways"> Parking / highways</label>
-            <label><input type="checkbox" name="risks" value="design_non_compliance"> Design non-compliance</label>
-            <label><input type="checkbox" name="risks" value="drainage_ecology"> Drainage / ecology</label>
-            <label><input type="checkbox" name="risks" value="neighbour_objections"> Neighbour objections likely</label>
+            <label><input type="checkbox" name="risks" value="overlooking" /> Overlooking / privacy</label>
+            <label><input type="checkbox" name="risks" value="overshadowing" /> Overshadowing / daylight</label>
+            <label><input type="checkbox" name="risks" value="bulk_scale" /> Bulk / scale / massing</label>
+            <label><input type="checkbox" name="risks" value="heritage_harm" /> Heritage impact</label>
+            <label><input type="checkbox" name="risks" value="green_belt_conflict" /> Green Belt issues</label>
+            <label><input type="checkbox" name="risks" value="parking_highways" /> Parking / highways</label>
+            <label><input type="checkbox" name="risks" value="design_non_compliance" /> Design non-compliance</label>
+            <label><input type="checkbox" name="risks" value="drainage_ecology" /> Drainage / ecology</label>
+            <label><input type="checkbox" name="risks" value="neighbour_objections" /> Neighbour objections likely</label>
           </div>
         </div>
 
         <div class="field">
-          <label for="junior_balance">Draft planning balance (short summary)</label>
-          <textarea id="junior_balance" name="junior_balance" placeholder="In 3–5 sentences, explain the key benefits, key risks, and the overall judgement."></textarea>
+          <label for="balance_text">Planning balance (short summary)</label>
+          <textarea id="balance_text" name="balance_text" placeholder="In 3–5 sentences, explain the key benefits, key risks, and the overall judgement."></textarea>
         </div>
       </div>
 
       <div class="actions">
-        <button type="submit" class="primary">
-          Generate Planning Reality Report
-        </button>
+        <button type="submit" class="primary">Generate Planning Reality Report</button>
       </div>
-      <p class="note">Once generated, use “Print / Save as PDF” on the report screen. Reports are indicative and for UrbanBrief use only.</p>
+      <p class="note">
+        Once generated, use “Print / Save as PDF” on the report screen.  
+        In the print dialog, untick browser “Headers and footers” – our own header/footer are built in.
+      </p>
     </form>
   </div>
 
@@ -1296,7 +1283,9 @@
         <button type="button" class="secondary" id="backToForm">Back to form</button>
         <button type="button" class="primary" id="printReport">Print / Save as PDF</button>
       </div>
-      <p class="note">In the print dialog, untick the browser “Headers and footers” — our own header/footer are built in.</p>
+      <p class="note">
+        In the print dialog, choose “Save as PDF” and untick <strong>Headers and footers</strong> so only the UrbanBrief header/footer show.
+      </p>
     </div>
 
     <div id="report">
@@ -1311,7 +1300,11 @@
           <div class="internal-tag">For internal UrbanBrief use only</div>
         </div>
         <div class="report-logo-box">
-          <img src="UB-mono.svg" alt="UrbanBrief logo" class="report-logo-img">
+          <!-- UB-mono logo: supports SVG or PNG -->
+          <img src="UB-mono.svg"
+               alt="UrbanBrief logo"
+               class="report-logo-img"
+               onerror="this.onerror=null;this.src='UB-mono.png';" />
         </div>
       </div>
 
@@ -1321,7 +1314,7 @@
         <p><span class="label">Local planning authority:</span> <span id="r_council_name_2"></span></p>
         <p><span class="label">Existing use class:</span> <span id="r_existing_use_class"></span></p>
         <p><span class="label">Site type:</span> <span id="r_site_type"></span></p>
-        <p><span class="label">Proposal:</span> <span id="r_proposal_type"></span></p>
+        <p><span class="label">Proposal type:</span> <span id="r_proposal_type"></span></p>
         <p><span class="label">Proposal summary:</span> <span id="r_proposal_summary"></span></p>
       </div>
 
@@ -1441,7 +1434,7 @@
         <div class="pill-row" id="r_risks"></div>
 
         <h3>8.3 Narrative balance</h3>
-        <p id="r_junior_balance"></p>
+        <p id="r_balance_text"></p>
 
         <div class="accent-box">
           <strong>UrbanBrief internal view (summary).</strong>
@@ -1467,9 +1460,8 @@
 </div>
 
 <script>
-  // 🔑 IMPORTANT: paste your real key here
-  // e.g. const GOOGLE_MAPS_API_KEY = 'AIzaSyDxSpOO_adV6pmCUpZjKKbPdEjy3ORdGxw';
-  const GOOGLE_MAPS_API_KEY = 'AIzaSyDxSpOO_adV6pmCUpZjKKbPdEjy3ORdGxw';
+  // 🔑 IMPORTANT: put your real key here (restricted to your domain)
+  const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY_HERE';
 
   const form = document.getElementById('prrForm');
   const inputPanel = document.getElementById('input-panel');
@@ -1477,30 +1469,28 @@
   const backToFormBtn = document.getElementById('backToForm');
   const printBtn = document.getElementById('printReport');
 
-  function getCheckedValues(name) {
-    return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(i => i.value);
+  function textVal(id) {
+    const el = document.getElementById(id);
+    return el && el.value ? el.value.trim() : '';
   }
 
-  function mapSelect(id) {
+  function mapSelectText(id) {
     const el = document.getElementById(id);
     if (!el) return '';
     const opt = el.options[el.selectedIndex];
     return opt && opt.text ? opt.text : '';
   }
 
-  function textVal(id) {
-    const el = document.getElementById(id);
-    return el && el.value ? el.value.trim() : '';
-  }
-
   function fillText(id, value) {
     const el = document.getElementById(id);
-    if (el) {
-      el.textContent = value || '';
-    }
+    if (el) el.textContent = value || '';
   }
 
-  function buildPills(containerId, values, map) {
+  function getCheckedValues(name) {
+    return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map((i) => i.value);
+  }
+
+  function buildPills(containerId, values, labelMap, isRisk) {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = '';
@@ -1512,10 +1502,10 @@
       container.appendChild(span);
       return;
     }
-    values.forEach(v => {
+    values.forEach((v) => {
       const pill = document.createElement('div');
-      pill.className = 'pill ' + (map.type === 'risks' ? 'negative' : '');
-      pill.textContent = (map.labels && map.labels[v]) || v;
+      pill.className = 'pill' + (isRisk ? ' negative' : '');
+      pill.textContent = (labelMap && labelMap[v]) || v;
       container.appendChild(pill);
     });
   }
@@ -1534,7 +1524,7 @@
       sssi: 'SSSI / SAC',
       listed_building: 'Listed building',
       locally_listed: 'Locally listed building',
-      none: 'No special designations known'
+      none: 'No special designations known',
     },
     constraints: {
       tpo: 'Protected trees (TPO)',
@@ -1545,7 +1535,7 @@
       aqma: 'Air Quality Management Area',
       archaeology: 'Archaeological interest',
       heritage_sightlines: 'Heritage sightline constraints',
-      unknown: 'Constraints unknown'
+      unknown: 'Constraints unknown',
     },
     benefits: {
       better_accommodation: 'Better quality accommodation',
@@ -1553,7 +1543,7 @@
       energy_efficiency: 'Energy / sustainability benefits',
       more_space: 'Additional internal floorspace',
       better_layout: 'Improved layout / accessibility',
-      policy_support: 'Strong policy support'
+      policy_support: 'Strong policy support',
     },
     risks: {
       overlooking: 'Overlooking / privacy',
@@ -1564,8 +1554,8 @@
       parking_highways: 'Parking / highways issues',
       design_non_compliance: 'Design non-compliance',
       drainage_ecology: 'Drainage / ecology issues',
-      neighbour_objections: 'Neighbour objections likely'
-    }
+      neighbour_objections: 'Neighbour objections likely',
+    },
   };
 
   form.addEventListener('submit', function (e) {
@@ -1588,44 +1578,43 @@
     fillText('r_existing_use_class', existingUse || 'Not specified');
     fillText('r_proposal_summary', proposalSummary || 'Not provided.');
 
-    // Header/footer line for print: first line of address
-    const addressLine = siteAddress.split(',')[0] || siteAddress || 'Site address';
-    const headerFooterText = 'Urban Brief – Planning Reality Report – ' + addressLine;
+    const siteTypeText = mapSelectText('site_type') || 'Not specified';
+    const proposalTypeText = mapSelectText('proposal_type') || 'Not specified';
+    fillText('r_site_type', siteTypeText);
+    fillText('r_proposal_type', proposalTypeText);
+
+    // Header/footer text based on first line of address
+    const firstLine = siteAddress.split(',')[0] || siteAddress || 'Site address';
+    const headerFooterText = 'Urban Brief – Planning Reality Report – ' + firstLine;
     fillText('printHeaderMain', headerFooterText);
     fillText('printFooterMain', headerFooterText);
-
-    // Site & proposal type
-    const siteTypeText = mapSelect('site_type');
-    const proposalTypeText = mapSelect('proposal_type');
-    fillText('r_site_type', siteTypeText || 'Not specified');
-    fillText('r_proposal_type', proposalTypeText || 'Not specified');
 
     // Designations & constraints
     const designations = getCheckedValues('designations');
     const constraints = getCheckedValues('constraints');
-    buildPills('r_designations', designations, { labels: labelMaps.designations });
-    buildPills('r_constraints', constraints, { labels: labelMaps.constraints });
+    buildPills('r_designations', designations, labelMaps.designations, false);
+    buildPills('r_constraints', constraints, labelMaps.constraints, false);
 
     // Context/impacts
-    fillText('r_visibility_public', mapSelect('visibility_public') || 'Not specified');
-    fillText('r_privacy_impact', mapSelect('privacy_impact') || 'Not specified');
-    fillText('r_daylight_impact', mapSelect('daylight_impact') || 'Not specified');
+    fillText('r_visibility_public', mapSelectText('visibility_public') || 'Not specified');
+    fillText('r_privacy_impact', mapSelectText('privacy_impact') || 'Not specified');
+    fillText('r_daylight_impact', mapSelectText('daylight_impact') || 'Not specified');
 
     // Design & layout
-    fillText('r_balcony', mapSelect('balcony_presence') || 'Not specified');
-    fillText('r_balcony_screening', mapSelect('balcony_screening') || 'Not specified');
-    fillText('r_height', mapSelect('proposal_height') || 'Not specified');
-    fillText('r_rear_projection', mapSelect('rear_projection') || 'Not specified');
-    fillText('r_materials', mapSelect('materials') || 'Not specified');
+    fillText('r_balcony', mapSelectText('balcony_presence') || 'Not specified');
+    fillText('r_balcony_screening', mapSelectText('balcony_screening') || 'Not specified');
+    fillText('r_height', mapSelectText('proposal_height') || 'Not specified');
+    fillText('r_rear_projection', mapSelectText('rear_projection') || 'Not specified');
+    fillText('r_materials', mapSelectText('materials') || 'Not specified');
 
     // Policy-level
-    fillText('r_has_spd', mapSelect('has_extension_spd') || 'Not specified');
-    fillText('r_spd_compliance', mapSelect('spd_compliance') || 'Not specified');
-    fillText('r_parking_compliance', mapSelect('parking_compliance') || 'Not specified');
-    fillText('r_housing_mix_compliance', mapSelect('housing_mix_compliance') || 'Not specified');
-    fillText('r_nppf_sustainable', mapSelect('nppf_sustainable') || 'Not specified');
-    fillText('r_nppf_character', mapSelect('nppf_characterscore') || 'Not specified');
-    fillText('r_nppf_heritage', mapSelect('nppf_heritage') || 'Not specified');
+    fillText('r_has_spd', mapSelectText('has_extension_spd') || 'Not specified');
+    fillText('r_spd_compliance', mapSelectText('spd_compliance') || 'Not specified');
+    fillText('r_parking_compliance', mapSelectText('parking_compliance') || 'Not specified');
+    fillText('r_housing_mix_compliance', mapSelectText('housing_mix_compliance') || 'Not specified');
+    fillText('r_nppf_sustainable', mapSelectText('nppf_sustainable') || 'Not specified');
+    fillText('r_nppf_character', mapSelectText('nppf_characterscore') || 'Not specified');
+    fillText('r_nppf_heritage', mapSelectText('nppf_heritage') || 'Not specified');
 
     // Policy 1
     const policy1Doc = textVal('policy1_doc_title');
@@ -1642,10 +1631,11 @@
     fillText('r_policy1_quote', textVal('policy1_quote'));
     fillText('r_policy1_interp', textVal('policy1_interp'));
 
-    // Policy 2
+    // Policy 2 block show/hide
     const policy2Doc = textVal('policy2_doc_title');
     const policy2Authority = textVal('policy2_authority');
     const policy2Any = policy2Doc || policy2Authority || textVal('policy2_ref') || textVal('policy2_quote');
+    const policy2Block = document.getElementById('r_policy2_block');
     if (policy2Any) {
       let policy2DocCombined = '';
       if (policy2Doc && policy2Authority) {
@@ -1658,22 +1648,22 @@
       fillText('r_policy2_title', textVal('policy2_title'));
       fillText('r_policy2_quote', textVal('policy2_quote'));
       fillText('r_policy2_interp', textVal('policy2_interp'));
-      document.getElementById('r_policy2_block').style.display = 'block';
+      policy2Block.style.display = 'block';
     } else {
-      document.getElementById('r_policy2_block').style.display = 'none';
+      policy2Block.style.display = 'none';
     }
 
     // Technical
-    fillText('r_drainage_known', mapSelect('drainage_known') || 'Not specified');
-    fillText('r_suds_required', mapSelect('suds_required') || 'Not specified');
-    fillText('r_highways_safety', mapSelect('highways_safety') || 'Not specified');
-    fillText('r_ecology_risk', mapSelect('ecology_risk') || 'Not specified');
-    fillText('r_trees_impact', mapSelect('trees_impact') || 'Not specified');
+    fillText('r_drainage_known', mapSelectText('drainage_known') || 'Not specified');
+    fillText('r_suds_required', mapSelectText('suds_required') || 'Not specified');
+    fillText('r_highways_safety', mapSelectText('highways_safety') || 'Not specified');
+    fillText('r_ecology_risk', mapSelectText('ecology_risk') || 'Not specified');
+    fillText('r_trees_impact', mapSelectText('trees_impact') || 'Not specified');
 
     // History & precedent
     fillText('r_hist1_ref', textVal('hist1_ref'));
     fillText('r_hist1_desc', textVal('hist1_desc'));
-    fillText('r_hist1_decision', mapSelect('hist1_decision') || 'Not specified');
+    fillText('r_hist1_decision', mapSelectText('hist1_decision') || 'Not specified');
     fillText('r_hist1_date', textVal('hist1_date') ? ' – ' + textVal('hist1_date') : '');
     fillText('r_hist1_officer', textVal('hist1_officer') || 'Not summarised.');
     fillText('r_hist1_relevance', textVal('hist1_relevance') || 'Not explained.');
@@ -1681,7 +1671,7 @@
     fillText('r_prec1_address', textVal('prec1_address'));
     fillText('r_prec1_ref', textVal('prec1_ref'));
     fillText('r_prec1_desc', textVal('prec1_desc'));
-    fillText('r_prec1_decision', mapSelect('prec1_decision') || 'Not specified');
+    fillText('r_prec1_decision', mapSelectText('prec1_decision') || 'Not specified');
     fillText('r_prec1_relevance', textVal('prec1_relevance') || 'Not explained.');
 
     // Maps (URLs)
@@ -1690,13 +1680,17 @@
     fillText('r_maps_location_url', mapsLocationUrl || 'Not provided');
     fillText('r_maps_streetview_url', mapsStreetViewUrl || 'Not provided');
 
-    // Build Google Static Maps / Street View images from address/postcode
-    const staticMapImg = document.getElementById('r_static_map_img');
-    const streetViewImg = document.getElementById('r_streetview_img');
+    // Build static map & street view
     const staticMapWrapper = document.getElementById('staticMapWrapper');
     const streetViewWrapper = document.getElementById('streetViewWrapper');
+    const staticMapImg = document.getElementById('r_static_map_img');
+    const streetViewImg = document.getElementById('r_streetview_img');
 
-    if (GOOGLE_MAPS_API_KEY && GOOGLE_MAPS_API_KEY !== 'YOUR_GOOGLE_MAPS_API_KEY_HERE' && (siteAddress || sitePostcode)) {
+    if (
+      GOOGLE_MAPS_API_KEY &&
+      GOOGLE_MAPS_API_KEY !== 'YOUR_GOOGLE_MAPS_API_KEY_HERE' &&
+      (siteAddress || sitePostcode)
+    ) {
       const query = encodeURIComponent((siteAddress + ' ' + sitePostcode).trim());
 
       const staticMapUrl =
@@ -1704,12 +1698,14 @@
         query +
         '&zoom=18&size=640x360&maptype=satellite&markers=color:red|' +
         query +
-        '&key=' + encodeURIComponent(GOOGLE_MAPS_API_KEY);
+        '&key=' +
+        encodeURIComponent(GOOGLE_MAPS_API_KEY);
 
       const streetViewUrl =
         'https://maps.googleapis.com/maps/api/streetview?size=640x360&location=' +
         query +
-        '&key=' + encodeURIComponent(GOOGLE_MAPS_API_KEY);
+        '&key=' +
+        encodeURIComponent(GOOGLE_MAPS_API_KEY);
 
       staticMapImg.src = staticMapUrl;
       streetViewImg.src = streetViewUrl;
@@ -1721,32 +1717,33 @@
     }
 
     // Balance
-    const likelihoodText = mapSelect('likelihood') || 'Not specified';
+    const likelihoodText = mapSelectText('likelihood') || 'Not specified';
     fillText('r_likelihood', likelihoodText);
     fillText('r_likelihood_inline', likelihoodText.toLowerCase());
 
     const benefits = getCheckedValues('benefits');
     const risks = getCheckedValues('risks');
-    buildPills('r_benefits', benefits, { labels: labelMaps.benefits, type: 'benefits' });
-    buildPills('r_risks', risks, { labels: labelMaps.risks, type: 'risks' });
+    buildPills('r_benefits', benefits, labelMaps.benefits, false);
+    buildPills('r_risks', risks, labelMaps.risks, true);
 
-    const balanceText = textVal('junior_balance') ||
+    const balanceText =
+      textVal('balance_text') ||
       'A narrative planning balance has not been provided. This section should be completed before issuing to the client.';
-    fillText('r_junior_balance', balanceText);
+    fillText('r_balance_text', balanceText);
 
-    // Show report view
+    // Show report
     inputPanel.style.display = 'none';
     reportPanel.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  backToFormBtn.addEventListener('click', () => {
+  backToFormBtn.addEventListener('click', function () {
     reportPanel.style.display = 'none';
     inputPanel.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  printBtn.addEventListener('click', () => {
+  printBtn.addEventListener('click', function () {
     window.print();
   });
 </script>
