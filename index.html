@@ -1300,11 +1300,7 @@
           <div class="internal-tag">For internal UrbanBrief use only</div>
         </div>
         <div class="report-logo-box">
-          <!-- UB-mono logo: supports SVG or PNG -->
-          <img src="UB-mono.svg"
-               alt="UrbanBrief logo"
-               class="report-logo-img"
-               onerror="this.onerror=null;this.src='UB-mono.png';" />
+          <img src="UB-mono.png" alt="UrbanBrief logo" class="report-logo-img" />
         </div>
       </div>
 
@@ -1460,8 +1456,8 @@
 </div>
 
 <script>
-  // 🔑 IMPORTANT: put your real key here (restricted to your domain)
-  const GOOGLE_MAPS_API_KEY = 'AIzaSyDxSpOO_adV6pmCUpZjKKbPdEjy3ORdGxw';
+  // 🔑 Put your real key here (keep the quotes)
+  const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY_HERE';
 
   const form = document.getElementById('prrForm');
   const inputPanel = document.getElementById('input-panel');
@@ -1558,6 +1554,20 @@
     },
   };
 
+  // Pull "lat,lng" from a Google Maps / Street View URL if present
+  function latLngFromGoogleUrl(url) {
+    if (!url) return null;
+    try {
+      const m = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+      if (m) {
+        return m[1] + ',' + m[2];
+      }
+    } catch (e) {
+      // ignore
+    }
+    return null;
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -1583,7 +1593,7 @@
     fillText('r_site_type', siteTypeText);
     fillText('r_proposal_type', proposalTypeText);
 
-    // Header/footer text based on first line of address
+    // Print header/footer text
     const firstLine = siteAddress.split(',')[0] || siteAddress || 'Site address';
     const headerFooterText = 'Urban Brief – Planning Reality Report – ' + firstLine;
     fillText('printHeaderMain', headerFooterText);
@@ -1595,7 +1605,7 @@
     buildPills('r_designations', designations, labelMaps.designations, false);
     buildPills('r_constraints', constraints, labelMaps.constraints, false);
 
-    // Context/impacts
+    // Context / impacts
     fillText('r_visibility_public', mapSelectText('visibility_public') || 'Not specified');
     fillText('r_privacy_impact', mapSelectText('privacy_impact') || 'Not specified');
     fillText('r_daylight_impact', mapSelectText('daylight_impact') || 'Not specified');
@@ -1631,7 +1641,7 @@
     fillText('r_policy1_quote', textVal('policy1_quote'));
     fillText('r_policy1_interp', textVal('policy1_interp'));
 
-    // Policy 2 block show/hide
+    // Policy 2
     const policy2Doc = textVal('policy2_doc_title');
     const policy2Authority = textVal('policy2_authority');
     const policy2Any = policy2Doc || policy2Authority || textVal('policy2_ref') || textVal('policy2_quote');
@@ -1674,36 +1684,52 @@
     fillText('r_prec1_decision', mapSelectText('prec1_decision') || 'Not specified');
     fillText('r_prec1_relevance', textVal('prec1_relevance') || 'Not explained.');
 
-    // Maps (URLs)
+    // Maps - URLs in text
     const mapsLocationUrl = textVal('maps_location_url');
     const mapsStreetViewUrl = textVal('maps_streetview_url');
     fillText('r_maps_location_url', mapsLocationUrl || 'Not provided');
     fillText('r_maps_streetview_url', mapsStreetViewUrl || 'Not provided');
 
-    // Build static map & street view
+    // Maps - Figures using URLs if possible
     const staticMapWrapper = document.getElementById('staticMapWrapper');
     const streetViewWrapper = document.getElementById('streetViewWrapper');
     const staticMapImg = document.getElementById('r_static_map_img');
     const streetViewImg = document.getElementById('r_streetview_img');
 
-    if (
-      GOOGLE_MAPS_API_KEY &&
-      GOOGLE_MAPS_API_KEY !== 'AIzaSyDxSpOO_adV6pmCUpZjKKbPdEjy3ORdGxw' &&
-      (siteAddress || sitePostcode)
-    ) {
-      const query = encodeURIComponent((siteAddress + ' ' + sitePostcode).trim());
+    if (GOOGLE_MAPS_API_KEY && (siteAddress || sitePostcode)) {
+      let staticCenter = null;
+
+      // Prefer coords from Maps URL
+      const mapLatLng = latLngFromGoogleUrl(mapsLocationUrl);
+      if (mapLatLng) {
+        staticCenter = mapLatLng;
+      }
+
+      // Fall back to address/postcode
+      if (!staticCenter) {
+        staticCenter = (siteAddress + ' ' + sitePostcode).trim();
+      }
+
+      // Street View: prefer Street View URL coords
+      let streetLocation = null;
+      const svLatLng = latLngFromGoogleUrl(mapsStreetViewUrl);
+      if (svLatLng) {
+        streetLocation = svLatLng;
+      } else {
+        streetLocation = staticCenter;
+      }
 
       const staticMapUrl =
         'https://maps.googleapis.com/maps/api/staticmap?center=' +
-        query +
+        encodeURIComponent(staticCenter) +
         '&zoom=18&size=640x360&maptype=satellite&markers=color:red|' +
-        query +
+        encodeURIComponent(staticCenter) +
         '&key=' +
         encodeURIComponent(GOOGLE_MAPS_API_KEY);
 
       const streetViewUrl =
         'https://maps.googleapis.com/maps/api/streetview?size=640x360&location=' +
-        query +
+        encodeURIComponent(streetLocation) +
         '&key=' +
         encodeURIComponent(GOOGLE_MAPS_API_KEY);
 
@@ -1717,7 +1743,10 @@
     }
 
     // Balance
-    const likelihoodText = mapSelectText('likelihood') || 'Not specified';
+    const likelihoodValue = mapSelectText('likelihood');
+    const likelihoodText = likelihoodValue
+      ? likelihoodValue.charAt(0).toUpperCase() + likelihoodValue.slice(1)
+      : 'Not specified';
     fillText('r_likelihood', likelihoodText);
     fillText('r_likelihood_inline', likelihoodText.toLowerCase());
 
