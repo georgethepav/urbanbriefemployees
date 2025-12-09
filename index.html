@@ -307,7 +307,6 @@
     }
 
     .report-meta div { margin-bottom: 2px; }
-    .report-meta .internal-tag { font-weight: 600; color: var(--ub-primary); }
 
     .report-logo-box {
       display: flex;
@@ -316,8 +315,9 @@
     }
 
     .report-logo-img {
-      max-height: 60px;
-      max-width: 120px;
+      max-height: 80px;
+      height: auto;
+      width: auto;
     }
 
     .report-section {
@@ -420,6 +420,54 @@
 
     .no-print {}
 
+    /* Percentage scale styles */
+
+    .percent-scale {
+      margin-top: 6px;
+    }
+
+    .percent-scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--ub-muted);
+    }
+
+    .percent-scale-bar {
+      position: relative;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #ef4444, #f97316, #eab308, #22c55e);
+      margin: 6px 0 4px;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.5);
+    }
+
+    .percent-scale-thumb-bubble {
+      position: absolute;
+      top: -26px;
+      transform: translateX(-50%);
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #0f172a;
+      color: #f9fafb;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.3);
+    }
+
+    .percent-scale input[type="range"] {
+      width: 100%;
+      margin: 4px 0 0;
+    }
+
+    .percent-scale.report-scale {
+      margin-top: 4px;
+    }
+
+    .percent-scale.report-scale .percent-scale-bar {
+      margin-top: 4px;
+    }
+
     @media (max-width: 720px) {
       #report {
         padding: 20px 16px 24px;
@@ -443,6 +491,10 @@
       .page {
         padding: 0;
         max-width: none;
+      }
+
+      .main-header {
+        display: none !important;
       }
 
       #input-panel { display: none !important; }
@@ -1097,6 +1149,29 @@
           <label for="balance_text">Planning balance (short summary)</label>
           <textarea id="balance_text" name="balance_text" placeholder="In 3–5 sentences, explain the key benefits, key risks, and the overall judgement."></textarea>
         </div>
+
+        <div class="field">
+          <label for="chance_percent">Percentage chance of approval</label>
+          <div class="percent-scale">
+            <div class="percent-scale-labels">
+              <span>0%</span>
+              <span>100%</span>
+            </div>
+            <div class="percent-scale-bar">
+              <div class="percent-scale-thumb-bubble" id="chanceBubble">50% likelihood</div>
+            </div>
+            <input
+              type="range"
+              id="chance_percent"
+              name="chance_percent"
+              min="0"
+              max="100"
+              step="5"
+              value="50"
+            />
+            <small class="hint">Internal numeric rating to support the narrative planning balance.</small>
+          </div>
+        </div>
       </div>
 
       <div class="actions">
@@ -1137,7 +1212,6 @@
         <div class="report-meta">
           <div><strong>Prepared by:</strong> UrbanBrief</div>
           <div><strong>Client:</strong> <span id="r_client_name"></span></div>
-          <div class="internal-tag">For internal UrbanBrief use only</div>
         </div>
         <div class="report-logo-box">
           <img src="UB-mono.png" alt="UrbanBrief logo" class="report-logo-img" />
@@ -1281,6 +1355,18 @@
             relation to local design guidance, character, amenity and technical matters.
           </p>
         </div>
+
+        <div class="subsection-title">8.4 Percentage chance of approval</div>
+        <p id="r_chance_percent_text"></p>
+        <div class="percent-scale report-scale">
+          <div class="percent-scale-labels">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
+          <div class="percent-scale-bar">
+            <div class="percent-scale-thumb-bubble" id="r_chance_bubble">–</div>
+          </div>
+        </div>
       </div>
 
       <div class="disclaimer">
@@ -1296,7 +1382,7 @@
 </div>
 
 <script>
-  // 🔑 PUT YOUR GOOGLE MAPS API KEY BETWEEN THESE QUOTES:
+  // 🔑 Google Maps API key (you already enabled Static Maps + Street View)
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDxSpOO_adV6pmCUpZjKKbPdEjy3ORdGxw';
 
   const form = document.getElementById('prrForm');
@@ -1398,7 +1484,7 @@
   function latLngFromGoogleUrl(url) {
     if (!url) return null;
     try {
-      const m = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+      const m = url.match(/@(-?\\d+\\.?\\d*),(-?\\d+\\.?\\d*)/);
       if (m) return m[1] + ',' + m[2];
     } catch (e) {}
     return null;
@@ -1519,17 +1605,15 @@
     fillText('r_maps_location_url', mapsLocationUrl || 'Not provided');
     fillText('r_maps_streetview_url', mapsStreetViewUrl || 'Not provided');
 
-    // Maps – images (NOW DRIVEN BY LINKS ONLY)
+    // Maps – images (LINKS ONLY)
     const staticMapImg = document.getElementById('r_static_map_img');
     const streetViewImg = document.getElementById('r_streetview_img');
 
     const hasKey = GOOGLE_MAPS_API_KEY && GOOGLE_MAPS_API_KEY.trim() !== '';
     if (hasKey && (mapsLocationUrl || mapsStreetViewUrl)) {
-      // Try to get coordinates from the URLs
       const locLatLng = latLngFromGoogleUrl(mapsLocationUrl);
       const svLatLng = latLngFromGoogleUrl(mapsStreetViewUrl);
 
-      // We require *some* lat,lng from at least one of the links
       const baseLatLng = locLatLng || svLatLng;
 
       if (baseLatLng) {
@@ -1555,14 +1639,12 @@
         streetViewImg.src = streetViewUrl;
         streetViewImg.alt = 'Site street view';
       } else {
-        // Links present but no @lat,lng in them
         staticMapImg.removeAttribute('src');
         staticMapImg.alt = 'Static map not available – use a full Google Maps URL that contains @lat,lng.';
         streetViewImg.removeAttribute('src');
         streetViewImg.alt = 'Street view not available – use a full Street View URL that contains @lat,lng.';
       }
     } else {
-      // No links or no key
       staticMapImg.removeAttribute('src');
       staticMapImg.alt = 'Static map not available – add Google Maps and Street View URLs.';
       streetViewImg.removeAttribute('src');
@@ -1587,11 +1669,53 @@
       'A narrative planning balance has not been provided. This section should be completed before issuing to the client.';
     fillText('r_balance_text', balanceText);
 
+    // Percentage chance of approval (numeric)
+    const chanceInput = document.getElementById('chance_percent');
+    const chanceValue = chanceInput ? parseInt(chanceInput.value || '0', 10) : 0;
+    const safeChance = Math.max(0, Math.min(100, isNaN(chanceValue) ? 0 : chanceValue));
+
+    const chanceTextEl = document.getElementById('r_chance_percent_text');
+    if (chanceTextEl) {
+      chanceTextEl.textContent =
+        'Internal percentage chance of approval: ' + safeChance + '% (supporting the narrative assessment above).';
+    }
+
+    const reportBubble = document.getElementById('r_chance_bubble');
+    if (reportBubble) {
+      reportBubble.textContent = safeChance + '% likelihood rating';
+      reportBubble.style.left = safeChance + '%';
+    }
+
+    // Set document title so PDF filename defaults to UB-PRR-{POSTCODE}-01
+    const postcodeNoSpaces = (sitePostcode || '').replace(/\\s+/g, '');
+    if (postcodeNoSpaces) {
+      document.title = 'UB-PRR-' + postcodeNoSpaces.toUpperCase() + '-01';
+    } else {
+      document.title = 'UB-PRR-REPORT';
+    }
+
     // Show report
     inputPanel.style.display = 'none';
     reportPanel.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  // Live update for the percentage chance bubble on the form
+  const chanceInputForm = document.getElementById('chance_percent');
+  const chanceBubbleForm = document.getElementById('chanceBubble');
+
+  function updateChanceBubbleForm() {
+    if (!chanceInputForm || !chanceBubbleForm) return;
+    const val = parseInt(chanceInputForm.value || '0', 10);
+    const safeVal = Math.max(0, Math.min(100, isNaN(val) ? 0 : val));
+    chanceBubbleForm.textContent = safeVal + '% likelihood';
+    chanceBubbleForm.style.left = safeVal + '%';
+  }
+
+  if (chanceInputForm && chanceBubbleForm) {
+    chanceInputForm.addEventListener('input', updateChanceBubbleForm);
+    updateChanceBubbleForm();
+  }
 
   backToFormBtn.addEventListener('click', function () {
     reportPanel.style.display = 'none';
