@@ -12,7 +12,6 @@
       --ub-border: #dde2ed;
       --ub-text: #111827;
       --ub-muted: #6b7280;
-      --ub-accent: #f97316;
     }
 
     * {
@@ -400,12 +399,6 @@
       font-size: 0.86rem;
     }
 
-    .report-section ul {
-      margin: 0 0 4px 18px;
-      padding: 0;
-      font-size: 0.86rem;
-    }
-
     .label {
       font-weight: 600;
     }
@@ -480,33 +473,7 @@
       border: 1px solid #e5e7eb;
     }
 
-    .no-print {
-      /* marker */
-    }
-
-    /* PRINT HEADER / FOOTER */
-
-    .print-header,
-    .print-footer {
-      display: none;
-    }
-
-    .print-header-inner,
-    .print-footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      color: var(--ub-muted);
-    }
-
-    .print-header-inner span,
-    .print-footer-inner span {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
+    .no-print { }
 
     @media (max-width: 720px) {
       header.main-header {
@@ -556,43 +523,11 @@
         border-radius: 0;
         border: none;
         margin: 0;
-        padding: 20mm 15mm 18mm;
+        padding: 10mm 10mm 10mm;
       }
 
       .no-print {
         display: none !important;
-      }
-
-      .print-header,
-      .print-footer {
-        display: block;
-        position: fixed;
-        left: 0;
-        right: 0;
-        font-size: 0.78rem;
-        color: var(--ub-muted);
-        padding: 3mm 15mm;
-        background: #ffffff;
-        z-index: 1000;
-      }
-
-      .print-header {
-        top: 0;
-        border-bottom: 1px solid #e5e7eb;
-      }
-
-      .print-footer {
-        bottom: 0;
-        border-top: 1px solid #e5e7eb;
-      }
-
-      .page-number::before {
-        content: "Page " counter(page);
-      }
-
-      #report {
-        margin-top: 18mm;
-        margin-bottom: 14mm;
       }
 
       .report-section {
@@ -602,19 +537,6 @@
   </style>
 </head>
 <body>
-
-<!-- PRINT HEADER / FOOTER (PRINT-ONLY) -->
-<div class="print-header">
-  <div class="print-header-inner">
-    <span id="printHeaderMain">Urban Brief – Planning Reality Report</span>
-  </div>
-</div>
-<div class="print-footer">
-  <div class="print-footer-inner">
-    <span id="printFooterMain">Urban Brief – Planning Reality Report</span>
-    <span class="page-number"></span>
-  </div>
-</div>
 
 <div class="page">
   <header class="main-header">
@@ -1260,7 +1182,7 @@
       </div>
       <p class="note">
         Once generated, use “Print / Save as PDF” on the report screen.  
-        In the print dialog, untick browser “Headers and footers” – our own header/footer are built in.
+        In the print dialog, you can turn off browser headers/footers for a cleaner output.
       </p>
     </form>
   </div>
@@ -1283,9 +1205,6 @@
         <button type="button" class="secondary" id="backToForm">Back to form</button>
         <button type="button" class="primary" id="printReport">Print / Save as PDF</button>
       </div>
-      <p class="note">
-        In the print dialog, choose “Save as PDF” and untick <strong>Headers and footers</strong> so only the UrbanBrief header/footer show.
-      </p>
     </div>
 
     <div id="report">
@@ -1456,8 +1375,8 @@
 </div>
 
 <script>
-  // 🔑 Put your real key here (keep the quotes)
-  const GOOGLE_MAPS_API_KEY = 'AIzaSyDxSpOO_adV6pmCUpZjKKbPdEjy3ORdGxw';
+  // 🔑 STEP 1: PUT YOUR GOOGLE MAPS API KEY BETWEEN THESE QUOTES:
+  const GOOGLE_MAPS_API_KEY = '';
 
   const form = document.getElementById('prrForm');
   const inputPanel = document.getElementById('input-panel');
@@ -1554,24 +1473,22 @@
     },
   };
 
-  // Pull "lat,lng" from a Google Maps / Street View URL if present
+  // Try to pull "lat,lng" out of a Google Maps / Street View URL
   function latLngFromGoogleUrl(url) {
     if (!url) return null;
     try {
-      const m = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+      const m = url.match(/@(-?\\d+\\.?\\d*),(-?\\d+\\.?\\d*)/);
       if (m) {
         return m[1] + ',' + m[2];
       }
-    } catch (e) {
-      // ignore
-    }
+    } catch (e) {}
     return null;
   }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    // Core details
+    // Core
     const clientName = textVal('client_name');
     const siteAddress = textVal('site_address');
     const sitePostcode = textVal('site_postcode');
@@ -1593,24 +1510,18 @@
     fillText('r_site_type', siteTypeText);
     fillText('r_proposal_type', proposalTypeText);
 
-    // Print header/footer text
-    const firstLine = siteAddress.split(',')[0] || siteAddress || 'Site address';
-    const headerFooterText = 'Urban Brief – Planning Reality Report – ' + firstLine;
-    fillText('printHeaderMain', headerFooterText);
-    fillText('printFooterMain', headerFooterText);
-
     // Designations & constraints
     const designations = getCheckedValues('designations');
     const constraints = getCheckedValues('constraints');
     buildPills('r_designations', designations, labelMaps.designations, false);
     buildPills('r_constraints', constraints, labelMaps.constraints, false);
 
-    // Context / impacts
+    // Context
     fillText('r_visibility_public', mapSelectText('visibility_public') || 'Not specified');
     fillText('r_privacy_impact', mapSelectText('privacy_impact') || 'Not specified');
     fillText('r_daylight_impact', mapSelectText('daylight_impact') || 'Not specified');
 
-    // Design & layout
+    // Design
     fillText('r_balcony', mapSelectText('balcony_presence') || 'Not specified');
     fillText('r_balcony_screening', mapSelectText('balcony_screening') || 'Not specified');
     fillText('r_height', mapSelectText('proposal_height') || 'Not specified');
@@ -1684,13 +1595,13 @@
     fillText('r_prec1_decision', mapSelectText('prec1_decision') || 'Not specified');
     fillText('r_prec1_relevance', textVal('prec1_relevance') || 'Not explained.');
 
-    // Maps - URLs in text
+    // Maps – text URLs
     const mapsLocationUrl = textVal('maps_location_url');
     const mapsStreetViewUrl = textVal('maps_streetview_url');
     fillText('r_maps_location_url', mapsLocationUrl || 'Not provided');
     fillText('r_maps_streetview_url', mapsStreetViewUrl || 'Not provided');
 
-    // Maps - Figures using URLs if possible
+    // Maps – images
     const staticMapWrapper = document.getElementById('staticMapWrapper');
     const streetViewWrapper = document.getElementById('streetViewWrapper');
     const staticMapImg = document.getElementById('r_static_map_img');
@@ -1698,26 +1609,14 @@
 
     if (GOOGLE_MAPS_API_KEY && (siteAddress || sitePostcode)) {
       let staticCenter = null;
-
-      // Prefer coords from Maps URL
       const mapLatLng = latLngFromGoogleUrl(mapsLocationUrl);
-      if (mapLatLng) {
-        staticCenter = mapLatLng;
-      }
+      if (mapLatLng) staticCenter = mapLatLng;
+      if (!staticCenter) staticCenter = (siteAddress + ' ' + sitePostcode).trim();
 
-      // Fall back to address/postcode
-      if (!staticCenter) {
-        staticCenter = (siteAddress + ' ' + sitePostcode).trim();
-      }
-
-      // Street View: prefer Street View URL coords
       let streetLocation = null;
       const svLatLng = latLngFromGoogleUrl(mapsStreetViewUrl);
-      if (svLatLng) {
-        streetLocation = svLatLng;
-      } else {
-        streetLocation = staticCenter;
-      }
+      if (svLatLng) streetLocation = svLatLng;
+      else streetLocation = staticCenter;
 
       const staticMapUrl =
         'https://maps.googleapis.com/maps/api/staticmap?center=' +
@@ -1742,7 +1641,7 @@
       streetViewWrapper.style.display = 'none';
     }
 
-    // Balance
+    // Planning balance
     const likelihoodValue = mapSelectText('likelihood');
     const likelihoodText = likelihoodValue
       ? likelihoodValue.charAt(0).toUpperCase() + likelihoodValue.slice(1)
