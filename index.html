@@ -1482,13 +1482,14 @@
 
   // Pull "lat,lng" from a Google Maps / Street View URL if present
   function latLngFromGoogleUrl(url) {
-    if (!url) return null;
-    try {
-      const m = url.match(/@(-?\\d+\\.?\\d*),(-?\\d+\\.?\\d*)/);
-      if (m) return m[1] + ',' + m[2];
-    } catch (e) {}
-    return null;
-  }
+  if (!url) return null;
+  try {
+    // Look for @lat,lng in the URL, e.g. @52.123456,-1.234567
+    const m = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+    if (m) return m[1] + ',' + m[2];
+  } catch (e) {}
+  return null;
+}
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
